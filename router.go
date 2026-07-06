@@ -31,6 +31,13 @@ func SetupRoutes(r *gin.Engine) {
 			protected.PUT("/products/:id", middlewares.RoleMiddleware("admin"), controllers.UpdateProduct)
 			protected.DELETE("/products/:id", middlewares.RoleMiddleware("admin"), controllers.DeleteProduct)
 
+			// Orders
+			protected.POST("/orders", middlewares.RoleMiddleware("admin", "waiter"), controllers.CreateOrder)
+			protected.GET("/orders/:id", middlewares.RoleMiddleware("admin", "waiter"), controllers.GetOrder)
+			protected.GET("/orders", middlewares.RoleMiddleware("admin", "waiter"), controllers.GetOrders)
+			protected.PUT("/orders/:id/status", middlewares.RoleMiddleware("admin", "waiter"), controllers.UpdateOrderStatus)
+			protected.DELETE("/orders/:id", middlewares.RoleMiddleware("admin"), controllers.DeleteOrder)
+
 		}
 	}
 }
