@@ -113,8 +113,51 @@ func SeedCategories() {
 	}
 }
 
+func SeedProducts() {
+	var count int64
+	config.DB.Model(&models.Product{}).Count(&count)
+
+	if count > 0 {
+		fmt.Println("Products already seeded, skipping...")
+		return
+	}
+
+	var mainCourse models.Category
+	if err := config.DB.Where("name = ?", "Main Course").First(&mainCourse).Error; err != nil {
+		log.Println("Main Course category not found, cannot seed products")
+		return
+	}
+
+	products := []models.Product{
+		{
+			CategoryID:  mainCourse.Id,
+			Name:        "Classic Cheeseburger",
+			Description: "Beef patty with cheddar cheese, lettuce, and tomato",
+			Price:       12.99,
+			Stock:       50,
+		},
+		{
+			CategoryID:  mainCourse.Id,
+			Name:        "Margherita Pizza",
+			Description: "Classic pizza with tomato sauce, mozzarella, and basil",
+			Price:       14.50,
+			Stock:       30,
+		},
+	}
+
+	for _, product := range products {
+		result := config.DB.Create(&product)
+		if result.Error != nil {
+			log.Println("Error in seeding product: ", result.Error)
+		} else {
+			fmt.Println("Product seeded: ", product.Name)
+		}
+	}
+}
+
 func SeedData() {
 	SeedRoles()
 	SeedUsers()
 	SeedCategories()
+	SeedProducts()
 }
