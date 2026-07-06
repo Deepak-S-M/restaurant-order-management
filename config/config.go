@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"restaurant-order-management/models"
 )
 
 var DB *gorm.DB
@@ -33,5 +35,7 @@ func ConnectDB() {
 	}
 
 	DB = db
+
+	models.Migrate(DB)
 	fmt.Println("Database connected successfully")
 }
