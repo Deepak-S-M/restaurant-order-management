@@ -87,7 +87,34 @@ func SeedUsers() {
 	}
 }
 
+func SeedCategories() {
+	var count int64
+	config.DB.Model(&models.Category{}).Count(&count)
+
+	if count > 0 {
+		fmt.Println("Categories already seeded, skipping...")
+		return
+	}
+
+	categories := []models.Category{
+		{Name: "Appetizers", Description: "Starters and light snacks"},
+		{Name: "Main Course", Description: "Primary dishes"},
+		{Name: "Desserts", Description: "Sweet treats"},
+		{Name: "Beverages", Description: "Drinks and refreshments"},
+	}
+
+	for _, category := range categories {
+		result := config.DB.Create(&category)
+		if result.Error != nil {
+			log.Println("Error in seeding category: ", result.Error)
+		} else {
+			fmt.Println("Category seeded: ", category.Name)
+		}
+	}
+}
+
 func SeedData() {
 	SeedRoles()
 	SeedUsers()
+	SeedCategories()
 }
