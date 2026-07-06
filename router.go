@@ -38,6 +38,12 @@ func SetupRoutes(r *gin.Engine) {
 			protected.PUT("/orders/:id/status", middlewares.RoleMiddleware("admin", "waiter"), controllers.UpdateOrderStatus)
 			protected.DELETE("/orders/:id", middlewares.RoleMiddleware("admin"), controllers.DeleteOrder)
 
+			// Users (Admin only)
+			protected.POST("/users", middlewares.RoleMiddleware("admin"), controllers.CreateUser)
+			protected.GET("/users", middlewares.RoleMiddleware("admin"), controllers.GetUsers)
+			protected.GET("/users/:id", middlewares.RoleMiddleware("admin"), controllers.GetUser)
+			protected.PUT("/users/:id", middlewares.RoleMiddleware("admin"), controllers.UpdateUser)
+			protected.DELETE("/users/:id", middlewares.RoleMiddleware("admin"), controllers.DeleteUser)
 		}
 	}
 }
