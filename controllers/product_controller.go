@@ -20,6 +20,15 @@ type ProductInput struct {
 	ImageURL    string  `json:"image_url"`
 }
 
+type UpdateProductInput struct {
+	CategoryID  *string  `json:"category_id"`
+	Name        *string  `json:"name"`
+	Description *string  `json:"description"`
+	Price       *float64 `json:"price"`
+	Stock       *int     `json:"stock"`
+	ImageURL    *string  `json:"image_url"`
+}
+
 func CreateProduct(c *gin.Context) {
 	var input ProductInput
 
@@ -104,18 +113,30 @@ func UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	var input ProductInput
+	var input UpdateProductInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		utils.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	product.CategoryID = input.CategoryID
-	product.Name = input.Name
-	product.Description = input.Description
-	product.Price = input.Price
-	product.Stock = input.Stock
-	product.ImageURL = input.ImageURL
+	if input.CategoryID != nil {
+		product.CategoryID = *input.CategoryID
+	}
+	if input.Name != nil {
+		product.Name = *input.Name
+	}
+	if input.Description != nil {
+		product.Description = *input.Description
+	}
+	if input.Price != nil {
+		product.Price = *input.Price
+	}
+	if input.Stock != nil {
+		product.Stock = *input.Stock
+	}
+	if input.ImageURL != nil {
+		product.ImageURL = *input.ImageURL
+	}
 
 	if err := config.DB.Save(&product).Error; err != nil {
 		utils.Error(c, http.StatusInternalServerError, "Could not update product")

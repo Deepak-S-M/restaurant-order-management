@@ -14,6 +14,11 @@ type CategoryInput struct {
 	Description string `json:"description"`
 }
 
+type UpdateCategoryInput struct {
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+}
+
 func CreateCategory(c *gin.Context) {
 	var input CategoryInput
 
@@ -67,14 +72,18 @@ func UpdateCategory(c *gin.Context) {
 		return
 	}
 
-	var input CategoryInput
+	var input UpdateCategoryInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		utils.Error(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	category.Name = input.Name
-	category.Description = input.Description
+	if input.Name != nil {
+		category.Name = *input.Name
+	}
+	if input.Description != nil {
+		category.Description = *input.Description
+	}
 
 	if err := config.DB.Save(&category).Error; err != nil {
 		utils.Error(c, http.StatusInternalServerError, "Could not update category")

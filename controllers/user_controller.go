@@ -10,9 +10,9 @@ import (
 )
 
 type UpdateUserInput struct {
-	Name   string `json:"name" binding:"required"`
-	Email  string `json:"email" binding:"required,email"`
-	RoleID string `json:"role_id" binding:"required"`
+	Name   *string `json:"name"`
+	Email  *string `json:"email" binding:"omitempty,email"`
+	RoleID *string `json:"role_id"`
 }
 
 type CreateUserInput struct {
@@ -106,21 +106,27 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	var existingUser models.User
-	if err := config.DB.Where("email = ? AND id != ?", input.Email, id).First(&existingUser).Error; err == nil {
-		utils.Error(c, http.StatusConflict, "Email already in use")
-		return
+	if input.Email != nil {
+		var existingUser models.User
+		if err := config.DB.Where("email = ? AND id != ?", *input.Email, id).First(&existingUser).Error; err == nil {
+			utils.Error(c, http.StatusConflict, "Email already in use")
+			return
+		}
+		user.Email = *input.Email
 	}
 
-	var role models.Role
-	if err := config.DB.Where("id = ?", input.RoleID).First(&role).Error; err != nil {
-		utils.Error(c, http.StatusBadRequest, "Invalid Role ID")
-		return
+	if input.RoleID != nil {
+		var role models.Role
+		if err := config.DB.Where("id = ?", *input.RoleID).First(&role).Error; err != nil {
+			utils.Error(c, http.StatusBadRequest, "Invalid Role ID")
+			return
+		}
+		user.RoleId = *input.RoleID
 	}
 
-	user.Name = input.Name
-	user.Email = input.Email
-	user.RoleId = input.RoleID
+	if input.Name != nil {
+		user.Name = *input.Name
+	}
 
 	if err := config.DB.Save(&user).Error; err != nil {
 		utils.Error(c, http.StatusInternalServerError, "Could not update user")
