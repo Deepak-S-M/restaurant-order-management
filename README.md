@@ -29,6 +29,24 @@ Here is what is running under the hood:
 * **PostgreSQL 16** for the database
 * **Docker and Docker Compose** so you can run the whole thing without setting up anything locally
 
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+* **Go** (version 1.21 or higher)
+* **PostgreSQL** (version 16 or higher)
+* **Docker and Docker Compose** (optional, if you want to run it via containers)
+
+## Environment Variables
+
+You need to set up a few environment variables to connect to the database and secure the JWT tokens. Create a `.env` file in the root of the project with the following:
+
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=restaurant_db
+DB_PORT=5432
+JWT_SECRET=your_super_secret_key
+
 ## Running the Project
 
 The easiest way to get it running is with Docker. As long as you have Docker and Docker Compose installed, just follow these steps:
@@ -101,6 +119,45 @@ Everything here is admin-only.
 Everything here is admin-only.
 * `GET /api/roles` — list all available roles
 * `GET /api/roles/:id` — get details for a specific role
+
+## Sample Requests & Responses
+
+Here is an example of what it looks like to interact with the API when creating an order:
+
+**Creating an Order (Request)**
+```json
+POST /api/orders
+{
+  "items": [
+    {
+      "product_id": "bc07baeb-d8dd-43db-97ec-8991d3df812b",
+      "quantity": 3
+    }
+  ]
+}
+
+**Creating an Order (Response)**
+json
+{
+  "status": "success",
+  "message": "Order created successfully",
+  "data": {
+    "id": "849592e2-3c5b-4939-81a0-4d78c038c578",
+    "user_id": "2cdaa24a-b37e-4225-873b-5f479fe0a8dd",
+    "status": "pending",
+    "subtotal": 897.00,
+    "tax": 89.70,
+    "grand_total": 986.70,
+    "items": [
+      {
+        "product_id": "bc07baeb-d8dd-43db-97ec-8991d3df812b",
+        "quantity": 3,
+        "unit_price": 299.00,
+        "subtotal": 897.00
+      }
+    ]
+  }
+}
 
 ## Testing with Postman
 
