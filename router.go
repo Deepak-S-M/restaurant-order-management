@@ -9,6 +9,7 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	api := r.Group("/api")
+	api.Use(middlewares.LoggerMiddleware())
 	{
 		api.POST("/login", controllers.Login)
 		api.POST("/register", controllers.Register)
