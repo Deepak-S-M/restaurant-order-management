@@ -1,0 +1,782 @@
+{
+	"info": {
+		"_postman_id": "9831a371-3d42-4a3b-834b-bc88a6d3ba09",
+		"name": "restaurant-order-management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24270258"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@restaurant.com\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"waiter1@restaurant.com\",\n    \"password\": \"waiter1123\",\n    \"name\": \"waiter1\",\n    \"role\": \"waiter\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"waiter2\",\n    \"email\": \"waiter2@restaurant.com\",\n    \"password\": \"waiter2123\",\n    \"role_id\": \"26333606-acfb-4db8-b9e1-15ad6a13147c\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/2423f31f-8c3d-4b5f-9dd0-36cbc908a69d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"2423f31f-8c3d-4b5f-9dd0-36cbc908a69d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Waiter 2 user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/2423f31f-8c3d-4b5f-9dd0-36cbc908a69d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"2423f31f-8c3d-4b5f-9dd0-36cbc908a69d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ5NDQ0NX0.0rA7AEPyBMLP432Ma7bSUPx-OGDhBMBjG8OUFY85wkU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/users/2423f31f-8c3d-4b5f-9dd0-36cbc908a69d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"2423f31f-8c3d-4b5f-9dd0-36cbc908a69d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get Role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/roles/0cc76a3d-2fae-4f2c-b212-8d42e60798ac",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roles",
+								"0cc76a3d-2fae-4f2c-b212-8d42e60798ac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/roles",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/categories/93012243-8777-4095-8b87-542f99a23b70",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"93012243-8777-4095-8b87-542f99a23b70"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Starters and light snacks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/categories/93012243-8777-4095-8b87-542f99a23b70",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"93012243-8777-4095-8b87-542f99a23b70"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ5NDQ0NX0.0rA7AEPyBMLP432Ma7bSUPx-OGDhBMBjG8OUFY85wkU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/categories/4cd8b824-67a7-447b-b441-37a2898bab93",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"4cd8b824-67a7-447b-b441-37a2898bab93"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": \"7d205124-c77a-4b61-88a1-132b097c69d8\",\n    \"name\": \"Classic Cheeseburger\",\n    \"description\": \"Beef patty with cheddar cheese, lettuce, and tomato\",\n    \"price\": 130,\n    \"stock\": 50\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products/bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 13\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/products/bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ5NDQ0NX0.0rA7AEPyBMLP432Ma7bSUPx-OGDhBMBjG8OUFY85wkU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/products/bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"bb1dc1db-fe79-4b7e-a7bf-7f945f423f8b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"product_id\": \"bc07baeb-d8dd-43db-97ec-8991d3df812b\",\n      \"quantity\": 3\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/orders/849592e2-3c5b-4939-81a0-4d78c038c578",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"849592e2-3c5b-4939-81a0-4d78c038c578"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Appetizers\",\n    \"description\": \"Starters and light snacks\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ0NTQ0NH0.mzMlhHlenVfHlfsKXbloWo6ijUQLOXoiqggeltPZ0TA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/orders/849592e2-3c5b-4939-81a0-4d78c038c578/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"849592e2-3c5b-4939-81a0-4d78c038c578",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMmNkYWEyNGEtYjM3ZS00MjI1LTg3M2ItNWY0NzlmZTBhOGRkIiwiZW1haWwiOiJhZG1pbkByZXN0YXVyYW50LmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc4MzQ5NDQ0NX0.0rA7AEPyBMLP432Ma7bSUPx-OGDhBMBjG8OUFY85wkU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/api/orders/fce6392f-c252-4f0c-aad1-63ac18c92135",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"fce6392f-c252-4f0c-aad1-63ac18c92135"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "json_web_token_01ta",
+			"secret": true
+		},
+		{
+			"key": "bearer_token_0p24",
+			"secret": true
+		}
+	]
+}
