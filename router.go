@@ -45,6 +45,10 @@ func SetupRoutes(r *gin.Engine) {
 			protected.GET("/users/:id", middlewares.RoleMiddleware("admin"), controllers.GetUser)
 			protected.PUT("/users/:id", middlewares.RoleMiddleware("admin"), controllers.UpdateUser)
 			protected.DELETE("/users/:id", middlewares.RoleMiddleware("admin"), controllers.DeleteUser)
+
+			// Roles (Admin only)
+			protected.GET("/roles", middlewares.RoleMiddleware("admin"), controllers.GetRoles)
+			protected.GET("/roles/:id", middlewares.RoleMiddleware("admin"), controllers.GetRole)
 		}
 	}
 }
