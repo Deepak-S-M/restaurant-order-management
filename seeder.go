@@ -133,14 +133,14 @@ func SeedProducts() {
 			CategoryID:  mainCourse.Id,
 			Name:        "Classic Cheeseburger",
 			Description: "Beef patty with cheddar cheese, lettuce, and tomato",
-			Price:       12.99,
+			Price:       299.00,
 			Stock:       50,
 		},
 		{
 			CategoryID:  mainCourse.Id,
 			Name:        "Margherita Pizza",
 			Description: "Classic pizza with tomato sauce, mozzarella, and basil",
-			Price:       14.50,
+			Price:       399.00,
 			Stock:       30,
 		},
 	}

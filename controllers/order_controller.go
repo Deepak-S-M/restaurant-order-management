@@ -49,6 +49,11 @@ func CreateOrder(c *gin.Context) {
 			return
 		}
 
+		if product.Stock < itemInput.Quantity {
+			utils.Error(c, http.StatusBadRequest, "Insufficient stock for product: "+product.Name)
+			return
+		}
+
 		itemSubtotal := product.Price * float64(itemInput.Quantity)
 		subtotal += itemSubtotal
 
@@ -80,6 +85,10 @@ func CreateOrder(c *gin.Context) {
 		for i := range orderItems {
 			orderItems[i].OrderID = order.Id
 			if err := tx.Create(&orderItems[i]).Error; err != nil {
+				return err
+			}
+
+			if err := tx.Model(&models.Product{}).Where("id = ?", orderItems[i].ProductID).UpdateColumn("stock", gorm.Expr("stock - ?", orderItems[i].Quantity)).Error; err != nil {
 				return err
 			}
 		}
@@ -169,7 +178,7 @@ func UpdateOrderStatus(c *gin.Context) {
 	id := c.Param("id")
 	var order models.Order
 
-	if err := config.DB.Where("id = ?", id).First(&order).Error; err != nil {
+	if err := config.DB.Preload("Items").Where("id = ?", id).First(&order).Error; err != nil {
 		utils.Error(c, http.StatusNotFound, "Order not found")
 		return
 	}
@@ -190,8 +199,17 @@ func UpdateOrderStatus(c *gin.Context) {
 		return
 	}
 
-	order.Status = input.Status
+	validStatuses := map[string]bool{
+		"pending":   true,
+		"completed": true,
+	}
 
+	if !validStatuses[input.Status] {
+		utils.Error(c, http.StatusBadRequest, "Invalid status. Allowed statuses are: pending, completed")
+		return
+	}
+
+	order.Status = input.Status
 	if err := config.DB.Save(&order).Error; err != nil {
 		utils.Error(c, http.StatusInternalServerError, "Could not update order status")
 		return
@@ -204,19 +222,36 @@ func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
 	var order models.Order
 
-	if err := config.DB.Where("id = ?", id).First(&order).Error; err != nil {
+	if err := config.DB.Preload("Items").Where("id = ?", id).First(&order).Error; err != nil {
 		utils.Error(c, http.StatusNotFound, "Order not found")
 		return
 	}
 
-	if err := config.DB.Delete(&order).Error; err != nil {
-		utils.Error(c, http.StatusInternalServerError, "Could not delete order")
+	err := config.DB.Transaction(func(tx *gorm.DB) error {
+		// Restore stock if the order was pending (meaning stock was deducted but not yet consumed/completed)
+		if order.Status == "pending" {
+			for _, item := range order.Items {
+				if err := tx.Model(&models.Product{}).Where("id = ?", item.ProductID).UpdateColumn("stock", gorm.Expr("stock + ?", item.Quantity)).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		if err := tx.Where("order_id = ?", id).Delete(&models.OrderItem{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Delete(&order).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		utils.Error(c, http.StatusInternalServerError, "Could not delete order and restore stock")
 		return
 	}
-
-	// Also delete order items (soft delete handled by gorm if setup, but let's delete explicitly if needed.
-	// Actually, GORM soft delete will handle it if we set it up, but for now we just delete the order.
-	config.DB.Where("order_id = ?", id).Delete(&models.OrderItem{})
 
 	utils.Success(c, http.StatusOK, "Order deleted successfully", nil)
 }
