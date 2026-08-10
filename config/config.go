@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -13,11 +14,12 @@ import (
 )
 
 var DB *gorm.DB
+var RedisClient *redis.Client
 
 func ConnectDB() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file: ", err)
+		log.Println("Warning: Error loading .env file")
 	}
 
 	dsn := fmt.Sprintf(
@@ -38,4 +40,28 @@ func ConnectDB() {
 
 	models.Migrate(DB)
 	fmt.Println("Database connected successfully")
+}
+
+func ConnectRedis() {
+	redisHost := os.Getenv("REDIS_HOST")
+	redisPort := os.Getenv("REDIS_PORT")
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+
+	if redisHost == "" {
+		redisHost = "localhost"
+	}
+	if redisPort == "" {
+		redisPort = "6379"
+	}
+
+	redisAddr := fmt.Sprintf("%s:%s", redisHost, redisPort)
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     redisAddr,
+		Password: redisPassword,
+		DB:       0,
+	})
+
+	RedisClient = client
+	fmt.Println("Redis connected successfully")
 }

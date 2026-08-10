@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order SSE Test</title>
+</head>
+
+<body>
+
+<h2>Order SSE</h2>
+
+<input type="text" id="orderId" placeholder="Order ID">
+<button onclick="connect()">Connect</button>
+
+<pre id="output"></pre>
+
+<script>
+
+let eventSource;
+
+function connect() {
+
+    const orderId = document.getElementById("orderId").value;
+    const output = document.getElementById("output");
+
+    if (!orderId) {
+        alert("Enter Order ID");
+        return;
+    }
+
+    if (eventSource) {
+        eventSource.close();
+    }
+
+    const url = "http://localhost:8080/api/orders/" + orderId;
+
+    console.log("SSE URL:", url);
+
+    output.textContent = "Connecting to:\n" + url + "\n\n";
+
+    eventSource = new EventSource(url);
+
+    eventSource.onopen = function () {
+
+        console.log("SSE connected");
+
+        output.textContent +=
+            "SSE connected successfully!\n\n";
+    };
+
+    eventSource.addEventListener("order", function (event) {
+
+        console.log("Order:", event.data);
+
+        output.textContent +=
+            "Order Update:\n" +
+            event.data +
+            "\n\n";
+    });
+
+    eventSource.onerror = function (event) {
+
+        console.error("SSE error:", event);
+
+        output.textContent +=
+            "SSE connection error.\n";
+
+        console.log(
+            "readyState:",
+            eventSource.readyState
+        );
+    };
+}
+
+</script>
+
+</body>
+</html>

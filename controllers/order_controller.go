@@ -1,12 +1,15 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"restaurant-order-management/config"
 	"restaurant-order-management/models"
 	"restaurant-order-management/utils"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -153,25 +156,60 @@ func GetOrders(c *gin.Context) {
 }
 
 func GetOrder(c *gin.Context) {
-	id := c.Param("id")
+	w := c.Writer
+
+	// SSE headers
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("X-Accel-Buffering", "no")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "SSE not supported", http.StatusInternalServerError)
+		return
+	}
+
+	orderID := c.Param("id")
+
 	var order models.Order
 
-	if err := config.DB.Preload("User").Preload("Items.Product").Where("id = ?", id).First(&order).Error; err != nil {
+	if err := config.DB.
+		Preload("User").
+		Preload("Items.Product").
+		Where("id = ?", orderID).
+		First(&order).Error; err != nil {
+
 		utils.Error(c, http.StatusNotFound, "Order not found")
 		return
 	}
 
-	// RBAC Check for Waiter
-	role, _ := c.Get("role")
-	if role == "waiter" {
-		userID, _ := c.Get("user_id")
-		if order.UserID != userID {
-			utils.Error(c, http.StatusForbidden, "You can only view your own orders")
-			return
-		}
+	orderJSON, err := json.Marshal(order)
+	if err != nil {
+		http.Error(w, "Error encoding order", http.StatusInternalServerError)
+		return
 	}
 
-	utils.Success(c, http.StatusOK, "Order fetched successfully", order)
+	fmt.Println("Sending initial order...")
+
+	fmt.Fprintf(w, "event: order\n")
+	fmt.Fprintf(w, "data: %s\n\n", orderJSON)
+
+	flusher.Flush()
+
+	fmt.Println("Initial order sent")
+
+	// Keep connection alive
+	for {
+		select {
+		case <-c.Request.Context().Done():
+			fmt.Println("Client disconnected")
+			return
+
+		default:
+			time.Sleep(1 * time.Second)
+		}
+	}
 }
 
 func UpdateOrderStatus(c *gin.Context) {
