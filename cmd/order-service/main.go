@@ -1,11 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 
 	"restaurant-order-management/config"
@@ -17,7 +18,20 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 )
+
+func recoveryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("PANIC in %s: %v\n%s\n", info.FullMethod, r, debug.Stack())
+			err = status.Errorf(codes.Internal, "internal server error: %v", r)
+		}
+	}()
+	return handler(ctx, req)
+}
 
 func main() {
 	fmt.Println("Order Service Starting...")
@@ -84,23 +98,43 @@ func main() {
 		addr = ":8080"
 	}
 
-	lis, err := net.Listen("tcp", addr)
-	if err != nil {
-		log.Fatalf("Error connecting tcp")
+	userServiceAddr := os.Getenv("USER_SERVICE_ADDRESS")
+	if userServiceAddr == "" {
+		userServiceAddr = "localhost:8081"
 	}
 
-	server := grpc.NewServer()
-	pb.RegisterOrderServiceServer(server, &controllers.GrpcOrderServer{})
+	userConn, err := grpc.NewClient(userServiceAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		fmt.Println("Error connecting to User Service:", err)
+		return
+	}
+	defer userConn.Close()
+
+	userClient := pb.NewUserServiceClient(userConn)
+
+	lis, err := net.Listen("tcp", addr)
+	if err != nil {
+		fmt.Println("Error connecting tcp")
+		return
+	}
+
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(recoveryInterceptor),
+	)
+
+	pb.RegisterOrderServiceServer(grpcServer, &controllers.GrpcOrderServer{
+		UserClient: userClient,
+	})
 
 	go func() {
 		fmt.Println("Order Grpc server running on port: ", addr)
-		if err := server.Serve(lis); err != nil {
-			log.Fatalf("Failed to start order grpc server...")
+		if err := grpcServer.Serve(lis); err != nil {
+			fmt.Println("Failed to start order grpc server...")
 		}
 	}()
 
 	// srv := &http.Server{
-	// 	Addr:    addr,
+	// 	Addr:    "localhost:8083",
 	// 	Handler: r,
 	// }
 

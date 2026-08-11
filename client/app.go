@@ -35,7 +35,7 @@ func getUser() {
 func getOrder() {
 	conn, err := grpc.NewClient("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("Error connecting server", err)
+		log.Printf("Error connecting server. err: %v", err)
 	}
 
 	client := pb.NewOrderServiceClient(conn)
@@ -48,7 +48,7 @@ func getOrder() {
 
 	data, err := client.GetOrder(ctx, &orderRequest)
 	if err != nil {
-		log.Fatalf("Cannot Fetch order. err: ", err)
+		log.Printf("Cannot Fetch order. err: %v", err)
 	}
 
 	fmt.Println(data)

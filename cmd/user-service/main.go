@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"os/signal"
@@ -73,7 +72,7 @@ func main() {
 
 	lis, err := net.Listen("tcp", grpcAddr)
 	if err != nil {
-		log.Fatalf("Failed to listen on gRPC port: %v", err)
+		fmt.Printf("Failed to listen on gRPC port: %v", err)
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterUserServiceServer(grpcServer, &controllers.GrpcUserServer{})
@@ -81,7 +80,7 @@ func main() {
 	go func() {
 		fmt.Printf("User Service gRPC running on %s\n", grpcAddr)
 		if err := grpcServer.Serve(lis); err != nil {
-			log.Fatal("Failed to start gRPC server: ", err)
+			fmt.Printf("Failed to start gRPC server: %v", err)
 		}
 	}()
 

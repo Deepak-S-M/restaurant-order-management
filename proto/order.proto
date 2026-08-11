@@ -8,6 +8,7 @@ import "user.proto";
 
 service OrderService {
     rpc GetOrder(GetOrderRequest) returns (Order) {}
+    rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (Order) {}
 }
 
 message Order {
@@ -22,6 +23,11 @@ message Order {
     user.User user = 9;
 }
 
-message GetOrderRequest{
+message GetOrderRequest {
     string id = 1;
+}
+
+message UpdateOrderStatusRequest {
+    string id = 1;
+    string status = 2;
 }
