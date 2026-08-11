@@ -23,10 +23,14 @@ func (userHandler UserHandler) GetUser(c *gin.Context) {
 
 	user, err := userHandler.userServiceClient.GetUser(c.Request.Context(), &pb.GetUserRequest{Id: userID})
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to get user",
+			"error":   err.Error(),
+		})
 		return
 	}
 
-	fmt.Println("Error: ", err)
+	fmt.Println("handler Error: ", err)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Get User API",

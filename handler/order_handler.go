@@ -61,6 +61,18 @@ func (orderHandler OrderHandler) GetOrder(c *gin.Context) {
 
 	order, err := orderHandler.orderServiceClient.GetOrder(c.Request.Context(), &pb.GetOrderRequest{Id: orderID})
 	if err != nil {
+		errorData := map[string]interface{}{
+			"message": "Failed to get order",
+			"error":   err.Error(),
+		}
+
+		data, _ := json.Marshal(errorData)
+
+		fmt.Fprintf(c.Writer, "event: error\n")
+		fmt.Fprintf(c.Writer, "data: %s\n\n", data)
+
+		flusher.Flush()
+
 		return
 	}
 
@@ -138,6 +150,10 @@ func (orderHandler OrderHandler) UpdateOrderStatus(c *gin.Context) {
 
 	order, err := orderHandler.orderServiceClient.UpdateOrderStatus(c.Request.Context(), &pb.UpdateOrderStatusRequest{Id: orderID, Status: input.Status})
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to update order",
+			"error":   err.Error(),
+		})
 		return
 	}
 
