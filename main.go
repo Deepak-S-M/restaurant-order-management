@@ -3,15 +3,27 @@ package main
 import (
 	"log"
 	"restaurant-order-management/config"
-	"restaurant-order-management/controllers"
 	"restaurant-order-management/handler"
 	"restaurant-order-management/middlewares"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "restaurant-order-management/docs"
 )
 
+// @title Restaurant Order Management API
+// @version 1.0
+// @description Restaurant Order Management Microservices API
+// @host localhost:8000
+// @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 
 	config.ConnectDB()
@@ -32,9 +44,10 @@ func main() {
 	userHandler := handler.NewUserServiceHandler(userConn)
 
 	router := gin.Default()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.POST("/login", userHandler.Login)
 	api := router.Group("/api")
 	api.Use(middlewares.LoggerMiddleware())
-	api.POST("/login", controllers.Login)
 	{
 		protectedApi := api.Group("/")
 		protectedApi.Use(middlewares.AuthMiddleware())

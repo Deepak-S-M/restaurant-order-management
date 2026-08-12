@@ -1,0 +1,68 @@
+basePath: /
+definitions:
+  handler.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Restaurant Order Management Microservices API
+  title: Restaurant Order Management API
+  version: "1.0"
+paths:
+  /api/users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Getting User by Id
+      parameters:
+      - description: id of user
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Getting User by Id
+      tags:
+      - Users
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login User
+      parameters:
+      - description: login of user
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      summary: Login User
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

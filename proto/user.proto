@@ -5,6 +5,7 @@ package user;
 option go_package = "./pb";
 
 service UserService {
+  rpc Login(GetUserLoginRequest) returns (UserLoginResponse) {}
   rpc GetUser(GetUserRequest) returns (User) {}
 }
 
@@ -15,6 +16,18 @@ message User {
   string role = 4;
 }
 
+message GetUserLoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message UserLoginResponse {
+  string token = 1;
+  User user = 2;
+}
+
 message GetUserRequest {
   string id = 1;
 }
+
+
