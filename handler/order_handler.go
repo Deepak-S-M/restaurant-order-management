@@ -48,16 +48,16 @@ func notifySSEClients(
 func (orderHandler OrderHandler) GetOrder(c *gin.Context) {
 	orderID := c.Param("id")
 
-	c.Header("Content-Type", "text/event-stream")
-	c.Header("Cache-Control", "no-cache")
-	c.Header("Connection", "keep-alive")
-	c.Header("X-Accel-Buffering", "no")
-
 	flusher, ok := c.Writer.(http.Flusher)
 	if !ok {
 		c.JSON(500, gin.H{"error": "SSE not supported"})
 		return
 	}
+
+	c.Header("Content-Type", "text/event-stream")
+	c.Header("Cache-Control", "no-cache")
+	c.Header("Connection", "keep-alive")
+	c.Header("X-Accel-Buffering", "no")
 
 	order, err := orderHandler.orderServiceClient.GetOrder(c.Request.Context(), &pb.GetOrderRequest{Id: orderID})
 	if err != nil {
@@ -145,6 +145,16 @@ func (orderHandler OrderHandler) UpdateOrderStatus(c *gin.Context) {
 	var input UpdateOrderStatusInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		utils.Error(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	validStatuses := map[string]bool{
+		"pending": true,
+		"ready":   true,
+	}
+
+	if !validStatuses[input.Status] {
+		utils.Error(c, http.StatusBadRequest, "Invalid status. Allowed statuses are: pending, completed")
 		return
 	}
 

@@ -36,7 +36,7 @@ func recoveryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryS
 func main() {
 	fmt.Println("Order Service Starting...")
 	config.ConnectDB()
-	config.ConnectRedis()
+	// config.ConnectRedis()
 	seeder.SeedData()
 
 	r := gin.New()

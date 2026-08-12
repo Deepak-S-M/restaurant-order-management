@@ -2,11 +2,16 @@ package controllers
 
 import (
 	"context"
+	"errors"
 	"log"
 	"restaurant-order-management/config"
 	"restaurant-order-management/models"
 	"restaurant-order-management/pb"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 )
 
 type GrpcOrderServer struct {
@@ -18,8 +23,10 @@ func (s *GrpcOrderServer) GetOrder(ctx context.Context, req *pb.GetOrderRequest)
 	var order models.Order
 
 	if err := config.DB.Where("id = ?", req.Id).First(&order).Error; err != nil {
-		log.Println("Error fetching order, err: ", err)
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.Errorf(codes.NotFound, "order %s not found", req.Id)
+		}
+		return nil, status.Errorf(codes.Internal, "failed to fetch order")
 	}
 
 	userRequest := pb.GetUserRequest{Id: order.UserID}
