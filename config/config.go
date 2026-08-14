@@ -16,8 +16,8 @@ import (
 var DB *gorm.DB
 var RedisClient *redis.Client
 
-func ConnectDB() {
-	err := godotenv.Load()
+func ConnectDB(envPath string) {
+	err := godotenv.Load(envPath)
 	if err != nil {
 		log.Println("Warning: Error loading .env file")
 	}

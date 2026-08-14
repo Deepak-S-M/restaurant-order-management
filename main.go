@@ -26,7 +26,7 @@ import (
 // @name Authorization
 func main() {
 
-	config.ConnectDB()
+	config.ConnectDB(".env")
 
 	orderConn, err := grpc.NewClient("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {

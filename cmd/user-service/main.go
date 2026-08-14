@@ -19,7 +19,7 @@ import (
 
 func main() {
 	fmt.Println("User Service Starting...")
-	config.ConnectDB()
+	config.ConnectDB(".env")
 	config.ConnectRedis()
 	seeder.SeedData()
 
